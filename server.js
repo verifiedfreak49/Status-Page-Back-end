@@ -59,5 +59,28 @@ app.get('/test-email', async (req, res) => {
   }
 });
 
+// Test endpoint to check if server is up
+app.get('/api/ping', (req, res) => {
+  res.status(200).json({ message: 'pong', time: new Date().toISOString() });
+});
+
+// Dummy GET to simulate service fetch
+app.get('/api/test/services', (req, res) => {
+  res.status(200).json([
+    { name: 'Payments', status: 'operational' },
+    { name: 'Login API', status: 'degraded-performance' },
+    { name: 'Dashboard UI', status: 'major-outage' }
+  ]);
+});
+
+// Dummy POST to simulate a new service creation
+app.post('/api/test/create', (req, res) => {
+  const { name, status } = req.body;
+  if (!name || !status) {
+    return res.status(400).json({ message: 'Missing name or status' });
+  }
+  res.status(201).json({ message: 'Dummy service created', data: { name, status } });
+});
+
 // Start listening for requests
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
